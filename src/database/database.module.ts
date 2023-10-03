@@ -12,11 +12,9 @@ const repos = MongooseModule.forFeature([
   { name: BlogComment.name, schema: BlogCommentSchema },
 ]);
 
-const database = MongooseModule.forRootAsync({
-  useFactory: () => ({
-    uri: 'mongodb://localhost:27017/enthusia_blog_db', // please add your database string here
-  }),
-});
+const database = MongooseModule.forRoot(
+  'mongodb+srv://keval-admin:12345@mycluster.hhcms3y.mongodb.net/enthusia_blog_db',
+);
 
 @Module({
   imports: [database, repos],
