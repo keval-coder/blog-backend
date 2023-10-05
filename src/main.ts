@@ -8,6 +8,7 @@ async function bootstrap() {
   app.enableCors({
     origin: 'https://blog-frontend-wheat-theta.vercel.app/',
     credentials: true,
+    allowedHeaders: '*',
   });
   app.useGlobalPipes(new ValidationPipe());
 
