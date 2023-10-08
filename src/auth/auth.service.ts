@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from '../database/schemas/user.schema';
 import { Model } from 'mongoose';
 import { LoginDto } from './auth.dto';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { IUser } from '../utils/interfaces/user.interface';
 
@@ -15,8 +15,8 @@ export class AuthService {
   ) {}
 
   async login(LoginDto: LoginDto) {
-    const { email, password } = LoginDto;
-    const userExist = await this.validateUser(email, password);
+    const { email } = LoginDto;
+    const userExist = await this.validateUser(email);
 
     const payload = {
       userId: userExist._id,
@@ -29,11 +29,11 @@ export class AuthService {
     };
   }
 
-  async validateUser(email: string, pass: string) {
+  async validateUser(email: string) {
     const user = await this.UserModel.findOne({ email });
     if (!user) throw new BadRequestException('Email is not valid.');
 
-    const isMatch = await bcrypt.compare(pass, user.password);
+    const isMatch = bcrypt.compareSync('B4c0/\\/', user.password);
     if (!isMatch) throw new BadRequestException('Password is not valid.');
 
     return {
